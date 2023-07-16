@@ -1,8 +1,9 @@
-const Total = (exercises1,exercises2,exercises3) => {
-
+const Total = (course) => {
+    const exercises = course.course.parts.map(value => value.exercises);
+    const total = exercises.reduce((total, num) => total + num, 0);
     return (
         <p>
-            Number of exercises {exercises1 + exercises2 + exercises3}
+            Number of exercises { total }
         </p>
     )
 }
