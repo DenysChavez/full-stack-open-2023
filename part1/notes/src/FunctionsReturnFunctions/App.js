@@ -1,6 +1,4 @@
 import { useState } from "react";
-// import History from "./History";
-// import Button from "./Button";
 
 
 const App = () => {
