@@ -23,13 +23,38 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
 
-    const persontToFind = persons.some((object) => object.name === newName);
+    const existingPerson = persons.find((person) => person.name === newName);
 
-    if (!persontToFind) {
+    if (existingPerson) {
+      if (
+        window.confirm(
+          `${newName} is already added to the phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const changedPerson = { ...existingPerson, number: newNumber };
+
+        personService
+          .update(existingPerson.id, changedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== existingPerson.id ? person : returnedPerson
+              )
+            );
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch((error) => {
+            alert(
+              `the person '${existingPerson.name}' was already deleted from server`
+            );
+            setPersons(persons.filter((n) => n.id !== existingPerson.id));
+          });
+      }
+    } else {
       const personsObject = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1,
       };
 
       personService.create(personsObject).then((returnedPerson) => {
@@ -37,24 +62,22 @@ const App = () => {
         setNewName("");
         setNewNumber("");
       });
-    } else {
-      alert(`${newName} is already added to phonebook`);
     }
   };
 
   // /////
 
-  const deletePerson = id => {
-    const person = persons.find(n => n.id === id)
+  // Detele Person
+  const deletePerson = (id) => {
+    const person = persons.find((n) => n.id === id);
     if (window.confirm(`Delete ${person.name} ?`)) {
-      personService
-        .deletePerson(id)
-        .then(() => {
-          setPersons(persons.filter(n => n.id !== id))
-        })
+      personService.deletePerson(id).then(() => {
+        setPersons(persons.filter((n) => n.id !== id));
+      });
     }
-  }
+  };
 
+  // /////////
 
   const filteredPeople = persons.filter((person) =>
     person.name.toLowerCase().includes(searchName.toLowerCase())
