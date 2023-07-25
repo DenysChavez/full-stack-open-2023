@@ -8,7 +8,7 @@
     {
       "id": 2,
       "content": "Browser can execute only JavaScript",
-      "important": false
+      "important": true
     },
     {
       "id": 3,
@@ -22,7 +22,7 @@
     },
     {
       "content": "Dan bonito preciosito",
-      "important": false,
+      "important": true,
       "id": 5
     },
     {
@@ -42,7 +42,7 @@
     },
     {
       "content": "Michito bonito",
-      "important": false,
+      "important": true,
       "id": 9
     },
     {
