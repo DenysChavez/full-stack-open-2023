@@ -3,12 +3,15 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import PersonList from "./components/PersonList";
 import personService from "./serves/persons";
+import Notification from "./components/Notification";
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchName, setSearchName] = useState("");
+  const [message, setMessage] = useState(null)
 
   // Get Data from the Server
   useEffect(() => {
@@ -40,9 +43,13 @@ const App = () => {
               persons.map((person) =>
                 person.id !== existingPerson.id ? person : returnedPerson
               )
-            );
+            )
             setNewName("");
             setNewNumber("");
+            setMessage(`Updated ${changedPerson.name}`) 
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
           })
           .catch((error) => {
             alert(
@@ -61,6 +68,10 @@ const App = () => {
         setPersons(persons.concat(returnedPerson));
         setNewName("");
         setNewNumber("");
+        setMessage(`Added ${personsObject.name}`) 
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
       });
     }
   };
@@ -94,6 +105,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message}/>
       <Filter searchName={searchName} setSearchName={setSearchName} />
       <br />
       <PersonForm
