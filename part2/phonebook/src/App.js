@@ -12,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [searchName, setSearchName] = useState("");
   const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   // Get Data from the Server
   useEffect(() => {
@@ -52,9 +53,10 @@ const App = () => {
             }, 5000)
           })
           .catch((error) => {
-            alert(
-              `the person '${existingPerson.name}' was already deleted from server`
-            );
+            setErrorMessage(`Information of '${existingPerson.name}' has already removed from server`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
             setPersons(persons.filter((n) => n.id !== existingPerson.id));
           });
       }
@@ -105,7 +107,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message}/>
+      <Notification message={message} errorMessage={errorMessage} />
       <Filter searchName={searchName} setSearchName={setSearchName} />
       <br />
       <PersonForm
